@@ -1,6 +1,6 @@
 import streamlit as st
 
-# 🚨 Must be the first Streamlit call
+# 🚨 Must be first Streamlit command
 st.set_page_config(
     page_title="Service First AI Assistant",
     layout="centered"
@@ -12,24 +12,22 @@ sys.modules["sqlite3"] = pysqlite3
 import chromadb
 import openai
 
-# 🔐 OpenAI API Key (stored in Streamlit secrets)
+# 🔐 OpenAI Key from secrets
 client_openai = openai.OpenAI(api_key=st.secrets["openai_key"])
 
-# 🔎 Chroma client and collection
+# 🔎 Chroma DB
 client = chromadb.Client()
 collection = client.get_or_create_collection(name="service_first_assistant")
 
-# 🛠️ Branded UI
+# 🛠️ Branded Interface
 st.image("Service First Logo.png", use_column_width=True)
 st.title("🛠️ Service First AI Assistant")
-
 st.markdown(
     "This tool is designed to help our internal team — especially HR, admin, and marketing — "
     "get fast, helpful answers based on Service First’s knowledge base."
 )
 
 st.markdown("### 💬 Ask the Assistant a question:")
-
 user_input = st.text_input(" ", label_visibility="collapsed")
 
 if st.button("Submit") and user_input:
@@ -53,7 +51,7 @@ if st.button("Submit") and user_input:
         st.markdown("### 💡 Assistant's Response")
         st.write(response.choices[0].message.content)
 
-# 🧭 Sidebar for internal links
+# 🧭 Sidebar Navigation
 with st.sidebar:
     st.markdown("### 🔗 Quick Links")
     st.markdown("📄 SOPs (coming soon)")
