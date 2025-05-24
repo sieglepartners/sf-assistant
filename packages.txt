@@ -1,2 +1,1 @@
-# required system package
 libgl1-mesa-glx
