@@ -1,30 +1,31 @@
 import streamlit as st
+
+# 🚨 Must be the first Streamlit call
+st.set_page_config(
+    page_title="Service First AI Assistant",
+    layout="centered"
+)
+
 import sys
 import pysqlite3
 sys.modules["sqlite3"] = pysqlite3
 import chromadb
 import openai
 
-# ✅ This must be the first Streamlit command
-st.set_page_config(
-    page_title="Service First AI Assistant",
-    layout="centered"
-)
-
-# OpenAI setup
+# 🔐 OpenAI API Key (stored in Streamlit secrets)
 client_openai = openai.OpenAI(api_key=st.secrets["openai_key"])
 
-# Chroma setup
+# 🔎 Chroma client and collection
 client = chromadb.Client()
 collection = client.get_or_create_collection(name="service_first_assistant")
 
-# UI
+# 🛠️ Branded UI
 st.image("Service First Logo.png", use_column_width=True)
 st.title("🛠️ Service First AI Assistant")
 
 st.markdown(
     "This tool is designed to help our internal team — especially HR, admin, and marketing — "
-    "get fast, helpful answers based on Service First's knowledge base."
+    "get fast, helpful answers based on Service First’s knowledge base."
 )
 
 st.markdown("### 💬 Ask the Assistant a question:")
@@ -52,9 +53,9 @@ if st.button("Submit") and user_input:
         st.markdown("### 💡 Assistant's Response")
         st.write(response.choices[0].message.content)
 
-# Optional: Sidebar
+# 🧭 Sidebar for internal links
 with st.sidebar:
     st.markdown("### 🔗 Quick Links")
-    st.markdown("📄 [SOPs (coming soon)](#)")
-    st.markdown("🎓 [Training Materials](#)")
-    st.markdown("💬 [Contact Mark or Ashley](#)")
+    st.markdown("📄 SOPs (coming soon)")
+    st.markdown("🎓 Training Materials")
+    st.markdown("💬 Contact Mark or Ashley")
