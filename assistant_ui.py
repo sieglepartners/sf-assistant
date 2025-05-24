@@ -1,35 +1,35 @@
 import streamlit as st
 import sys
 import pysqlite3
-
-# Patch sqlite3 with pysqlite3 to meet ChromaDB requirements
 sys.modules["sqlite3"] = pysqlite3
-sys.modules["sqlite3.dbapi2"] = pysqlite3.dbapi2
-
 import chromadb
 import openai
 
-# OpenAI API setup
-client_openai = openai.OpenAI(api_key=st.secrets["openai_key"])
+# --- Service First Branding ---
+st.set_page_config(page_title="Service First AI Assistant", page_icon="🛠️", layout="centered")
+st.markdown(
+    "<h1 style='text-align: center;'>🛠️ Service First AI Assistant</h1>",
+    unsafe_allow_html=True
+)
 
-# Chroma setup
+st.markdown("This tool is designed to help our internal team — especially HR, admin, and marketing — get fast, helpful answers based on Service First's knowledge base.")
+
+# --- OpenAI + Chroma Setup ---
+client_openai = openai.OpenAI(api_key=st.secrets["openai_key"])
 client = chromadb.Client()
 collection = client.get_or_create_collection(name="service_first_assistant")
 
-# UI
-st.set_page_config(page_title="Service First AI Assistant", layout="centered")
-st.title("🛠️ Service First AI Assistant")
+# --- Assistant Input UI ---
+user_input = st.text_input("📥 Ask the Assistant a question:")
 
-user_input = st.text_input("Ask a question about Service First:")
-
-if st.button("Submit") and user_input:
-    with st.spinner("Thinking..."):
+if st.button("💬 Submit") and user_input:
+    with st.spinner("Thinking like a pro..."):
         results = collection.query(query_texts=[user_input], n_results=3)
         context = "\n\n".join(results["documents"][0])
 
         system_prompt = """
         You are the AI assistant for Service First Heating & Air Conditioning in Newtown, PA.
-        Answer like a confident team member. Avoid em dashes and fluff. Be helpful, clear, and precise.
+        You sound like a smart and confident employee. Avoid em dashes and fluff. Keep it helpful, clear, and real.
         """
 
         response = client_openai.chat.completions.create(
@@ -41,4 +41,4 @@ if st.button("Submit") and user_input:
         )
 
         st.markdown("### 💡 Assistant's Response")
-        st.write(response.choices[0].message.content)
+        st.success(response.choices[0].message.content)
