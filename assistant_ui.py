@@ -1,4 +1,11 @@
 import streamlit as st
+import sys
+import pysqlite3
+
+# Patch sqlite3 with pysqlite3 to meet ChromaDB requirements
+sys.modules["sqlite3"] = pysqlite3
+sys.modules["sqlite3.dbapi2"] = pysqlite3.dbapi2
+
 import chromadb
 import openai
 
