@@ -1,3 +1,11 @@
+[theme]
+base="dark"
+primaryColor="#FFFFFF"
+backgroundColor="#12418C"
+secondaryBackgroundColor="#0f376f"
+textColor="#FFFFFF"
+font="sans serif"
+
 [global]
 disableWatchdogWarning = true
 
